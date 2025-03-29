@@ -35,7 +35,7 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center h-screen">
       <Form
         className="flex flex-col max-w-xs w-full gap-2"
         onSubmit={handleSubmit(onSubmit)}
@@ -65,6 +65,15 @@ export default function SignInPage() {
           SIGN IN
         </Button>
       </Form>
+      <Button
+        className="font-semibold"
+        color="secondary"
+        size="sm"
+        type="submit"
+        variant="light"
+      >
+        sign-up first
+      </Button>
     </div>
   )
 }
