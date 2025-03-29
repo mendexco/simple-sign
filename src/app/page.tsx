@@ -1,10 +1,10 @@
 'use client'
 
-import { Button } from '@heroui/button'
+import { Button } from '@heroui/react'
 
 import { ThemeSwitcher } from '@components/ThemeSwitcher'
 
-export default function Home() {
+export default function HomePage() {
   return (
     <div>
       <Button color="primary">Click me</Button>

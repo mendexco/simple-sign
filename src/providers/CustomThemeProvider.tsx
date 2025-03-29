@@ -18,7 +18,7 @@ declare module '@react-types/shared' {
   }
 }
 
-export function ThemeProvider({ children, themeProps }: ProvidersProps) {
+export default function CustomThemeProvider({ children, themeProps }: ProvidersProps) {
   const router = useRouter()
 
   return (

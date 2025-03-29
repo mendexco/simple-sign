@@ -2,7 +2,7 @@
 
 import { FC } from 'react'
 import { VisuallyHidden } from '@react-aria/visually-hidden'
-import { type SwitchProps, useSwitch } from '@heroui/switch'
+import { type SwitchProps, useSwitch } from '@heroui/react'
 import { useTheme } from 'next-themes'
 import { useIsSSR } from '@react-aria/ssr'
 import clsx from 'clsx'
@@ -19,8 +19,8 @@ export const ThemeSwitcher: FC<ThemeSwitcherProps> = ({ className, classNames })
   const onChange = () => setTheme(theme === 'light' ? 'dark' : 'light')
 
   const { Component, slots, isSelected, getBaseProps, getInputProps, getWrapperProps } = useSwitch({
-    isSelected: theme === 'light' || isSSR,
     'aria-label': `Switch to ${theme === 'light' || isSSR ? 'dark' : 'light'} mode`,
+    isSelected: theme === 'light' || isSSR,
     onChange
   })
 

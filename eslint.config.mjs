@@ -12,23 +12,46 @@ const compat = new FlatCompat({
 
 // Existing config extended to include the import plugin and rules:
 const eslintConfig = [
-  ...compat.extends('next/core-web-vitals', 'next/typescript', 'plugin:import/recommended'),
+  ...compat.extends('next/core-web-vitals', 'next/typescript', 'plugin:import/recommended', 'plugin:react/recommended'),
   {
     rules: {
       'import/order': [
-        'warn',
+        'error',
         {
           groups: ['type', 'builtin', 'object', 'external', 'internal', 'parent', 'sibling', 'index'],
+          'newlines-between': 'always',
           pathGroups: [
             {
-              pattern: '~/**',
               group: 'external',
+              pattern: '~/**',
               position: 'after'
             }
-          ],
-          'newlines-between': 'always'
+          ]
         }
-      ]
+      ],
+      'no-multi-spaces': [
+        'error',
+        {
+          ignoreEOLComments: false
+        }
+      ],
+      'react/jsx-max-props-per-line': [
+        'error',
+        {
+          maximum: 2,
+          when: 'multiline'
+        }
+      ],
+      'react/jsx-sort-props': [
+        'error',
+        {
+          callbacksLast: true,
+          reservedFirst: true,
+          shorthandFirst: true
+        }
+      ],
+      'react/react-in-jsx-scope': 'off',
+      'sort-keys': ['error', 'asc', { caseSensitive: true, natural: false }]
     }
   }
 ]
