@@ -1,6 +1,7 @@
 import '@styles/globals.css'
 
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { Analytics } from "@vercel/analytics/react"
 import { Geist, Geist_Mono } from 'next/font/google'
 import { type ReactNode } from 'react'
 import { Metadata } from 'next'
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html suppressHydrationWarning lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>{children}</ThemeProvider>
+        <Analytics />
         <SpeedInsights />
       </body>
     </html>
