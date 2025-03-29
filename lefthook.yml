@@ -1,0 +1,11 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - run: bun lintfix
+      glob: "*.{js,ts,jsx,tsx}"
+
+commit-msg:
+  parallel: true
+  commands:
+    lint-commit-msg:
+      run: bun x commitlint --edit
