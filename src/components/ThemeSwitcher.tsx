@@ -1,11 +1,12 @@
 'use client'
 
 import { FC } from 'react'
-import { VisuallyHidden } from '@react-aria/visually-hidden'
+
 import { type SwitchProps, useSwitch } from '@heroui/react'
-import { useTheme } from 'next-themes'
 import { useIsSSR } from '@react-aria/ssr'
+import { VisuallyHidden } from '@react-aria/visually-hidden'
 import clsx from 'clsx'
+import { useTheme } from 'next-themes'
 
 export interface ThemeSwitcherProps {
   className?: string

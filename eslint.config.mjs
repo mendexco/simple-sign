@@ -18,15 +18,40 @@ const eslintConfig = [
       'import/order': [
         'error',
         {
-          groups: ['type', 'builtin', 'object', 'external', 'internal', 'parent', 'sibling', 'index'],
+          alphabetize: {
+            caseInsensitive: true,
+            order: 'asc'
+          },
+          groups: ['type', 'builtin', 'external', 'internal', ['parent', 'sibling', 'index'], 'object'],
           'newlines-between': 'always',
           pathGroups: [
             {
               group: 'external',
-              pattern: '~/**',
+              pattern: 'react',
+              position: 'before'
+            },
+            {
+              group: 'external',
+              pattern: 'react-dom',
+              position: 'before'
+            },
+            {
+              group: 'internal',
+              pattern: '@components/**',
+              position: 'after'
+            },
+            {
+              group: 'internal',
+              pattern: '@providers/**',
+              position: 'after'
+            },
+            {
+              group: 'internal',
+              pattern: '@styles/**',
               position: 'after'
             }
-          ]
+          ],
+          pathGroupsExcludedImportTypes: []
         }
       ],
       'no-multi-spaces': [

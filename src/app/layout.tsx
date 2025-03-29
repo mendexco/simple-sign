@@ -1,10 +1,11 @@
 import '@styles/globals.css'
-import { Geist, Geist_Mono } from 'next/font/google'
 import { type ReactNode } from 'react'
-import { Metadata } from 'next'
 
-import ObservabilityProvider from '@providers/ObservabilityProvider'
+import { Metadata } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
+
 import CustomThemeProvider from '@providers/CustomThemeProvider'
+import ObservabilityProvider from '@providers/ObservabilityProvider'
 
 const geistSans = Geist({
   subsets: ['latin'],
