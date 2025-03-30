@@ -7,6 +7,8 @@ import { useIsSSR } from '@react-aria/ssr'
 import { VisuallyHidden } from '@react-aria/visually-hidden'
 import clsx from 'clsx'
 import { useTheme } from 'next-themes'
+import { IoMdSunny } from 'react-icons/io'
+import { IoMoon } from 'react-icons/io5'
 
 export interface ThemeSwitcherProps {
   className?: string
@@ -53,7 +55,7 @@ export const ThemeSwitcher: FC<ThemeSwitcherProps> = ({ className, classNames })
           )
         })}
       >
-        {!isSelected || isSSR ? <p>light</p> : <p>dark</p>}
+        {!isSelected || isSSR ? <IoMdSunny size={24} /> : <IoMoon size={24} />}
       </div>
     </Component>
   )

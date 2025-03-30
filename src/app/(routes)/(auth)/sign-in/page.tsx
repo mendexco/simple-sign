@@ -1,31 +1,37 @@
 'use client'
 
+import { useState } from 'react'
+
 import { Button, Form, Input } from '@heroui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { FaGithub } from 'react-icons/fa'
+import { IoMdEye, IoMdEyeOff } from 'react-icons/io'
 import { z } from 'zod'
 
 import { useCustomSession, useRouter } from '@hooks'
 
-import { AUTH_PROVIDERS, ROUTES } from '@utils/constants'
+import { AUTH_PROVIDERS, UNPROTECTED_ROUTES } from '@utils/constants'
 
 import { signInSchema } from './schema'
 
-type FormData = z.infer<typeof signInSchema>
+type SignInFormData = z.infer<typeof signInSchema>
 
 export default function SignInPage() {
   const router = useRouter()
   const { signInMutation } = useCustomSession()
 
+  const [isPasswordVisible, setPassordVisible] = useState(false)
+
   const {
     register,
     handleSubmit,
-    formState: { errors }
-  } = useForm<FormData>({
+    formState: { errors, isValid }
+  } = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema)
   })
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: SignInFormData) => {
     signInMutation.mutate({
       additionalOptions: {
         email: data.email,
@@ -37,25 +43,39 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center h-screen gap-3">
       <Form
-        className="flex flex-col max-w-xs w-full gap-2"
+        className="flex flex-col max-w-xs w-full gap-3 items-center"
         onSubmit={handleSubmit(onSubmit)}
       >
         <Input
           fullWidth
           errorMessage={errors.email?.message}
           isInvalid={!!errors.email}
-          label="Email"
+          label="E-mail"
           type="email"
           {...register('email')}
         />
         <Input
           fullWidth
+          endContent={
+            <button
+              aria-label="toggle password visibility"
+              className="focus:outline-none"
+              type="button"
+              onClick={() => setPassordVisible((current) => !current)}
+            >
+              {isPasswordVisible ? (
+                <IoMdEyeOff className="text-2xl text-default-400 pointer-events-none" />
+              ) : (
+                <IoMdEye className="text-2xl text-default-400 pointer-events-none" />
+              )}
+            </button>
+          }
           errorMessage={errors.password?.message}
           isInvalid={!!errors.password}
           label="Password"
-          type="password"
+          type={isPasswordVisible ? 'text' : 'password'}
           {...register('password')}
         />
         <Button
@@ -63,35 +83,39 @@ export default function SignInPage() {
           className="font-semibold"
           color="primary"
           isLoading={signInMutation.isPending}
+          size="sm"
           type="submit"
+          variant={isValid ? 'shadow' : 'bordered'}
         >
-          SIGN IN
+          sign-in
         </Button>
       </Form>
-      <Button
-        className="font-semibold"
-        color="default"
-        isDisabled={signInMutation.isPending}
-        size="sm"
-        variant="light"
-        onPress={() =>
-          signInMutation.mutate({
-            provider: AUTH_PROVIDERS.GITHUB
-          })
-        }
-      >
-        sign-in with github
-      </Button>
-      <Button
-        className="font-semibold"
-        color="secondary"
-        isDisabled={signInMutation.isPending}
-        size="sm"
-        variant="light"
-        onPress={() => router.push(ROUTES.SIGN_UP)}
-      >
-        sign-up first
-      </Button>
+      <span className="text-xs font-semibold">or</span>
+      <div className="flex flex-col gap-2 align-center items-center">
+        <div className="flex gap-1">
+          <Button
+            isIconOnly
+            isDisabled={signInMutation.isPending}
+            variant="solid"
+            onPress={() =>
+              signInMutation.mutate({
+                provider: AUTH_PROVIDERS.GITHUB
+              })
+            }
+          >
+            <FaGithub size={32} />
+          </Button>
+        </div>
+        <Button
+          className="font-semibold"
+          isDisabled={signInMutation.isPending}
+          size="sm"
+          variant="flat"
+          onPress={() => router.push(UNPROTECTED_ROUTES.SIGN_UP)}
+        >
+          create an account
+        </Button>
+      </div>
     </div>
   )
 }

@@ -5,7 +5,7 @@ import { UserOrigin, type UserRegister } from '@entities/user'
 import { db } from '@utils/database'
 
 export async function create(userRegister: UserRegister) {
-  console.info('[/user/create] Starting user creation...')
+  console.info('[/user/upload] Starting user creation...')
   return db.user
     .create({
       data: {
@@ -16,11 +16,11 @@ export async function create(userRegister: UserRegister) {
       }
     })
     .then((user) => {
-      console.info('[/user/create] User successfully created!')
+      console.info('[/user/upload] User successfully created!')
       return user
     })
-    .catch((e) => {
-      console.error('[/user/create] Error while creating user: ', e.message)
+    .catch((error) => {
+      console.error('[/user/upload] Error while creating user: ', error.message)
       return null
     })
 }

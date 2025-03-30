@@ -2,11 +2,13 @@ export enum ROUTES {
   DASHBOARD = '/dashboard',
   HOME = '/',
   SIGN_IN = '/sign-in',
-  SIGN_UP = '/sign-up'
+  SIGN_UP = '/sign-up',
+  UPLOAD = '/dashboard/upload'
 }
 
 export enum PROTECTED_ROUTES {
-  DASHBOARD = ROUTES.DASHBOARD
+  DASHBOARD = ROUTES.DASHBOARD,
+  UPLOAD = ROUTES.UPLOAD
 }
 
 export enum UNPROTECTED_ROUTES {

@@ -38,8 +38,8 @@ export async function logIn(userLogIn: UserLogIn | undefined) {
       console.info('[/user/log-in] Password matches!')
       return user
     })
-    .catch((e) => {
-      console.error('[/user/log-in] Error while searching user: ', e.message)
+    .catch((error) => {
+      console.error('[/user/log-in] Error while searching user: ', error.message)
       return null
     })
 }

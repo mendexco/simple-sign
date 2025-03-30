@@ -7,32 +7,32 @@ import { z } from 'zod'
 
 import { useCustomSession, useRouter } from '@hooks'
 
-import { ROUTES } from '@utils/constants'
+import { UNPROTECTED_ROUTES } from '@utils/constants'
 
 import { signUpSchema } from './schema'
 
-type FormData = z.infer<typeof signUpSchema>
+type SignUpFormData = z.infer<typeof signUpSchema>
 
 export default function SignUpPage() {
   const router = useRouter()
   const {
     register,
     handleSubmit,
-    formState: { errors }
-  } = useForm<FormData>({
+    formState: { errors, isValid }
+  } = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema)
   })
 
   const { signUpMutation } = useCustomSession()
 
-  const onSubmit = async (formData: FormData) => {
+  const onSubmit = async (formData: SignUpFormData) => {
     signUpMutation.mutate(formData)
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center h-screen gap-3">
       <Form
-        className="flex flex-col max-w-xs w-full gap-2"
+        className="flex flex-col max-w-xs w-full gap-3"
         onSubmit={handleSubmit(onSubmit)}
       >
         <Input
@@ -47,7 +47,7 @@ export default function SignUpPage() {
           fullWidth
           errorMessage={errors.email?.message}
           isInvalid={!!errors.email}
-          label="Email"
+          label="E-mail"
           type="email"
           {...register('email')}
         />
@@ -64,18 +64,19 @@ export default function SignUpPage() {
           className="font-semibold"
           color="primary"
           isLoading={signUpMutation.isPending}
+          size="sm"
           type="submit"
+          variant={isValid ? 'shadow' : 'bordered'}
         >
-          SIGN UP
+          sign-up
         </Button>
       </Form>
       <Button
         className="font-semibold"
-        color="secondary"
         isDisabled={signUpMutation.isPending}
         size="sm"
-        variant="light"
-        onPress={() => router.push(ROUTES.SIGN_IN)}
+        variant="flat"
+        onPress={() => router.push(UNPROTECTED_ROUTES.SIGN_IN)}
       >
         sign-in
       </Button>

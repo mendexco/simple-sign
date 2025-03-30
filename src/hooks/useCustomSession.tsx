@@ -1,29 +1,42 @@
+import { addToast } from '@heroui/react'
 import { useMutation } from '@tanstack/react-query'
 import { usePathname } from 'next/navigation'
-import { signIn, type SignInOptions, useSession } from 'next-auth/react'
-import { closeSnackbar, useSnackbar } from 'notistack'
+import { signIn, type SignInOptions, signOut, useSession } from 'next-auth/react'
 
 import { useRouter } from '@hooks'
 
 import { create } from '@actions/user'
+import { getUserByEmail } from '@actions/user/get'
 
 import type { UserRegister } from '@entities/user'
 
 import { AUTH_PROVIDERS, PROTECTED_ROUTES } from '@utils/constants'
 
-type SignInProps = {
+type SignInParams = {
   provider: AUTH_PROVIDERS
   targetRoute?: PROTECTED_ROUTES
   additionalOptions?: Omit<SignInOptions, 'callbackUrl'>
 }
 
-type SignUpProps = UserRegister
+type SignUpParams = UserRegister
 
 const useCustomSession = () => {
   const pathname = usePathname()
   const router = useRouter()
   const { data: session } = useSession()
-  const { enqueueSnackbar } = useSnackbar()
+
+  async function getUserWithEmail(email?: string | null) {
+    if (!email) throw new Error('No e-mail provided.')
+
+    return getUserByEmail(email)
+      .catch((error) => {
+        console.error('Error while getting user: ', error.message)
+      })
+      .then((user) => {
+        if (!user?.id) throw new Error('Error while getting user.')
+        return user
+      })
+  }
 
   function ensureRedirect(targetRoute?: PROTECTED_ROUTES) {
     if (!!targetRoute && targetRoute !== pathname) router.push(targetRoute)
@@ -33,11 +46,15 @@ const useCustomSession = () => {
     provider,
     targetRoute = PROTECTED_ROUTES.DASHBOARD,
     additionalOptions = {}
-  }: SignInProps) {
-    if (!!session) {
+  }: SignInParams) {
+    if (!!session && session.user?.email === additionalOptions.email) {
       router.push(targetRoute)
       return
     }
+
+    await signOut({
+      redirect: false
+    })
 
     return signIn(provider, {
       callbackUrl: targetRoute,
@@ -47,12 +64,14 @@ const useCustomSession = () => {
         if (!response) return null
         if (!response.ok) throw new Error('Error while signing in.')
         ensureRedirect(targetRoute)
-        closeSnackbar()
         return response
       })
       .catch((error) => {
         console.error('error', error)
-        enqueueSnackbar(error.message, { variant: 'error' })
+        addToast({
+          color: 'danger',
+          title: error.message
+        })
       })
   }
 
@@ -61,7 +80,7 @@ const useCustomSession = () => {
   })
 
   const signUpMutation = useMutation({
-    mutationFn: async (formData: SignUpProps) => {
+    mutationFn: async (formData: SignUpParams) => {
       if (!!session) {
         router.push(PROTECTED_ROUTES.DASHBOARD)
         return
@@ -83,12 +102,15 @@ const useCustomSession = () => {
         })
         .catch((error) => {
           console.error('error', error)
-          enqueueSnackbar(error.message, { variant: 'error' })
+          addToast({
+            color: 'danger',
+            title: error.message
+          })
         })
     }
   })
 
-  return { signInMutation, signUpMutation }
+  return { getUserWithEmail, session, signInMutation, signUpMutation }
 }
 
 export default useCustomSession
