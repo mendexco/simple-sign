@@ -1,13 +1,5 @@
 'use client'
 
-import { Button } from '@heroui/react'
-import { signOut } from 'next-auth/react'
-
-export default function DashboardPage() {
-  return (
-    <>
-      dash
-      <Button onPress={() => signOut()}>sign out</Button>
-    </>
-  )
+export default function Sample() {
+  return <div className="flex flex-col items-center justify-center h-screen gap-2">list</div>
 }
