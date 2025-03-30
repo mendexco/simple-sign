@@ -46,8 +46,9 @@ const useDocuments = () => {
             color: 'success',
             endContent: (
               <Button
+                color="success"
                 size="sm"
-                variant="flat"
+                variant="shadow"
                 onPress={() => router.push(PROTECTED_ROUTES.DASHBOARD)}
               >
                 dashboard

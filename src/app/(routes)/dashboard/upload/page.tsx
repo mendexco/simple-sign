@@ -85,7 +85,7 @@ export default function UploadPage() {
             <Button
               className="font-semibold"
               color="primary"
-              isLoading={false}
+              isLoading={uploadDocumentMutation.isPending}
               size="sm"
               type="submit"
               variant={isValid ? 'shadow' : 'bordered'}

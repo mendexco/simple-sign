@@ -7,12 +7,21 @@ import { ThemeSwitcher } from '@components/ThemeSwitcher'
 
 import { UNPROTECTED_ROUTES } from '@utils/constants'
 
+const PROJECT_REPO = 'https://github.com/mendexco/simple-sign'
+
 export const HomeNavbar: FC = () => {
   return (
     <Navbar>
-      <NavbarBrand className="gap-2">
-        <FaGithub size={32} />
-        <p className="font-bold text-inherit">Github</p>
+      <NavbarBrand>
+        <Link
+          className="gap-2"
+          color="foreground"
+          href={PROJECT_REPO}
+          target="_blank"
+        >
+          <FaGithub size={32} />
+          <p className="font-bold text-inherit">Github</p>
+        </Link>
       </NavbarBrand>
       <NavbarContent
         className="sm:flex gap-4"

@@ -7,7 +7,8 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "lintfix": "next lint --fix"
+    "lintfix": "next lint --fix",
+    "db:deploy": "prisma db push"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.8.0",
