@@ -2,8 +2,11 @@
 
 import { Button, Form, Input } from '@heroui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+
+import { ROUTES } from '@utils/constants'
 
 const schema = z.object({
   email: z
@@ -25,6 +28,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 export default function SignUpPage() {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -38,7 +42,7 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center h-screen">
       <Form
         className="flex flex-col max-w-xs w-full gap-2"
         onSubmit={handleSubmit(onSubmit)}
@@ -76,6 +80,15 @@ export default function SignUpPage() {
           SIGN UP
         </Button>
       </Form>
+      <Button
+        className="font-semibold"
+        color="secondary"
+        size="sm"
+        variant="light"
+        onPress={() => router.push(ROUTES.SIGN_IN)}
+      >
+        sign-in
+      </Button>
     </div>
   )
 }

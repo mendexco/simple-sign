@@ -1,0 +1,21 @@
+export enum ROUTES {
+  DASHBOARD = '/dashboard',
+  HOME = '/',
+  SIGN_IN = '/sign-in',
+  SIGN_UP = '/sign-up'
+}
+
+export enum PROTECTED_ROUTES {
+  DASHBOARD = ROUTES.DASHBOARD
+}
+
+export enum UNPROTECTED_ROUTES {
+  HOME = ROUTES.HOME,
+  SIGN_IN = ROUTES.SIGN_IN,
+  SIGN_UP = ROUTES.SIGN_UP
+}
+
+export enum OAUTH_PROVIDERS {
+  GITHUB = 'github',
+  GOOGLE = 'google'
+}

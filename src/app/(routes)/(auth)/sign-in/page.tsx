@@ -2,8 +2,13 @@
 
 import { Button, Form, Input } from '@heroui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+
+import { OAUTH_PROVIDERS, PROTECTED_ROUTES, ROUTES } from '@utils/constants'
+
+import useCustomSession from '../../../../hooks/useCustomSession'
 
 const schema = z.object({
   email: z
@@ -22,6 +27,9 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 export default function SignInPage() {
+  const router = useRouter()
+  const { autoSignIn } = useCustomSession()
+
   const {
     register,
     handleSubmit,
@@ -67,10 +75,24 @@ export default function SignInPage() {
       </Form>
       <Button
         className="font-semibold"
+        color="default"
+        size="sm"
+        variant="light"
+        onPress={() =>
+          autoSignIn({
+            provider: OAUTH_PROVIDERS.GITHUB,
+            targetRoute: PROTECTED_ROUTES.DASHBOARD
+          })
+        }
+      >
+        sign-in with github
+      </Button>
+      <Button
+        className="font-semibold"
         color="secondary"
         size="sm"
-        type="submit"
         variant="light"
+        onPress={() => router.push(ROUTES.SIGN_UP)}
       >
         sign-up first
       </Button>

@@ -4,6 +4,7 @@ import { type ReactNode } from 'react'
 import { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 
+import CustomSessionProvider from '@providers/CustomSessionProvider'
 import CustomThemeProvider from '@providers/CustomThemeProvider'
 import ObservabilityProvider from '@providers/ObservabilityProvider'
 
@@ -28,17 +29,19 @@ export default function RootLayout({
   children: ReactNode
 }>) {
   return (
-    <html
-      suppressHydrationWarning
-      lang="en"
-    >
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ObservabilityProvider>
-          <CustomThemeProvider themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
-            {children}
-          </CustomThemeProvider>
-        </ObservabilityProvider>
-      </body>
-    </html>
+    <CustomSessionProvider>
+      <html
+        suppressHydrationWarning
+        lang="en"
+      >
+        <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          <ObservabilityProvider>
+            <CustomThemeProvider themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
+              {children}
+            </CustomThemeProvider>
+          </ObservabilityProvider>
+        </body>
+      </html>
+    </CustomSessionProvider>
   )
 }
