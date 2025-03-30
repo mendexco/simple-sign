@@ -6,28 +6,13 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { create } from '@actions/user'
+import { useCustomSession } from '@hooks'
 
 import { ROUTES } from '@utils/constants'
 
-const schema = z.object({
-  email: z
-    .string()
-    .nonempty({
-      message: 'Field is required'
-    })
-    .email({
-      message: 'Invalid e-mail format'
-    }),
-  name: z.string().nonempty({
-    message: 'Field is required'
-  }),
-  password: z.string().nonempty({
-    message: 'Field is required'
-  })
-})
+import { signUpSchema } from './schema'
 
-type FormData = z.infer<typeof schema>
+type FormData = z.infer<typeof signUpSchema>
 
 export default function SignUpPage() {
   const router = useRouter()
@@ -36,13 +21,13 @@ export default function SignUpPage() {
     handleSubmit,
     formState: { errors }
   } = useForm<FormData>({
-    resolver: zodResolver(schema)
+    resolver: zodResolver(signUpSchema)
   })
 
+  const { registerUser } = useCustomSession()
+
   const onSubmit = async (data: FormData) => {
-    console.log('data', data)
-    const response = await create(data)
-    console.log('response', response)
+    await registerUser(data)
   }
 
   return (

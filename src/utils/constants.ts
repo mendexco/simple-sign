@@ -15,7 +15,8 @@ export enum UNPROTECTED_ROUTES {
   SIGN_UP = ROUTES.SIGN_UP
 }
 
-export enum OAUTH_PROVIDERS {
+export enum AUTH_PROVIDERS {
+  CREDENTIALS = 'credentials',
   GITHUB = 'github',
   GOOGLE = 'google'
 }

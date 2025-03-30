@@ -3,6 +3,11 @@ enum UserOrigin {
   OAUTH = 'OAUTH'
 }
 
+type UserLogIn = {
+  email: string
+  password: string
+}
+
 type UserRegister = {
   name: string
   email: string
@@ -10,4 +15,4 @@ type UserRegister = {
 }
 
 export { UserOrigin }
-export type { UserRegister }
+export type { UserLogIn, UserRegister }

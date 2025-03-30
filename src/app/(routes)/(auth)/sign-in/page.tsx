@@ -6,25 +6,13 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { OAUTH_PROVIDERS, PROTECTED_ROUTES, ROUTES } from '@utils/constants'
+import { useCustomSession } from '@hooks'
 
-import useCustomSession from '../../../../hooks/useCustomSession'
+import { AUTH_PROVIDERS, ROUTES } from '@utils/constants'
 
-const schema = z.object({
-  email: z
-    .string()
-    .nonempty({
-      message: 'Field is required'
-    })
-    .email({
-      message: 'Invalid e-mail format'
-    }),
-  password: z.string().nonempty({
-    message: 'Field is required'
-  })
-})
+import { signInSchema } from './schema'
 
-type FormData = z.infer<typeof schema>
+type FormData = z.infer<typeof signInSchema>
 
 export default function SignInPage() {
   const router = useRouter()
@@ -35,11 +23,18 @@ export default function SignInPage() {
     handleSubmit,
     formState: { errors }
   } = useForm<FormData>({
-    resolver: zodResolver(schema)
+    resolver: zodResolver(signInSchema)
   })
 
-  const onSubmit = (data: FormData) => {
-    console.log(data)
+  const onSubmit = async (data: FormData) => {
+    await autoSignIn({
+      additionalOptions: {
+        email: data.email,
+        password: data.password,
+        redirect: false
+      },
+      provider: AUTH_PROVIDERS.CREDENTIALS
+    })
   }
 
   return (
@@ -80,8 +75,7 @@ export default function SignInPage() {
         variant="light"
         onPress={() =>
           autoSignIn({
-            provider: OAUTH_PROVIDERS.GITHUB,
-            targetRoute: PROTECTED_ROUTES.DASHBOARD
+            provider: AUTH_PROVIDERS.GITHUB
           })
         }
       >
