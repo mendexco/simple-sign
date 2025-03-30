@@ -16,7 +16,7 @@ type FormData = z.infer<typeof signInSchema>
 
 export default function SignInPage() {
   const router = useRouter()
-  const { autoSignIn } = useCustomSession()
+  const { signInMutation } = useCustomSession()
 
   const {
     register,
@@ -27,7 +27,7 @@ export default function SignInPage() {
   })
 
   const onSubmit = async (data: FormData) => {
-    await autoSignIn({
+    signInMutation.mutate({
       additionalOptions: {
         email: data.email,
         password: data.password,
@@ -63,6 +63,7 @@ export default function SignInPage() {
           fullWidth
           className="font-semibold"
           color="primary"
+          isLoading={signInMutation.isPending}
           type="submit"
         >
           SIGN IN
@@ -71,10 +72,11 @@ export default function SignInPage() {
       <Button
         className="font-semibold"
         color="default"
+        isDisabled={signInMutation.isPending}
         size="sm"
         variant="light"
         onPress={() =>
-          autoSignIn({
+          signInMutation.mutate({
             provider: AUTH_PROVIDERS.GITHUB
           })
         }
@@ -84,6 +86,7 @@ export default function SignInPage() {
       <Button
         className="font-semibold"
         color="secondary"
+        isDisabled={signInMutation.isPending}
         size="sm"
         variant="light"
         onPress={() => router.push(ROUTES.SIGN_UP)}

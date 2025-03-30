@@ -24,10 +24,10 @@ export default function SignUpPage() {
     resolver: zodResolver(signUpSchema)
   })
 
-  const { registerUser } = useCustomSession()
+  const { signUpMutation } = useCustomSession()
 
-  const onSubmit = async (data: FormData) => {
-    await registerUser(data)
+  const onSubmit = async (formData: FormData) => {
+    signUpMutation.mutate(formData)
   }
 
   return (
@@ -64,6 +64,7 @@ export default function SignUpPage() {
           fullWidth
           className="font-semibold"
           color="primary"
+          isLoading={signUpMutation.isPending}
           type="submit"
         >
           SIGN UP
@@ -72,6 +73,7 @@ export default function SignUpPage() {
       <Button
         className="font-semibold"
         color="secondary"
+        isDisabled={signUpMutation.isPending}
         size="sm"
         variant="light"
         onPress={() => router.push(ROUTES.SIGN_IN)}

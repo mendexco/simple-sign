@@ -12,7 +12,13 @@ const compat = new FlatCompat({
 
 // Existing config extended to include the import plugin and rules:
 const eslintConfig = [
-  ...compat.extends('next/core-web-vitals', 'next/typescript', 'plugin:import/recommended', 'plugin:react/recommended'),
+  ...compat.extends(
+    'next/core-web-vitals',
+    'next/typescript',
+    'plugin:import/recommended',
+    'plugin:react/recommended',
+    'plugin:@tanstack/query/recommended'
+  ),
   {
     rules: {
       'import/order': [

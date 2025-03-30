@@ -1,5 +1,7 @@
+import { useMutation } from '@tanstack/react-query'
 import { usePathname, useRouter } from 'next/navigation'
 import { signIn, type SignInOptions, useSession } from 'next-auth/react'
+import { useSnackbar } from 'notistack'
 
 import { create } from '@actions/user'
 
@@ -7,26 +9,29 @@ import type { UserRegister } from '@entities/user'
 
 import { AUTH_PROVIDERS, PROTECTED_ROUTES } from '@utils/constants'
 
-type AutoSignInProps = {
+type SignInProps = {
   provider: AUTH_PROVIDERS
   targetRoute?: PROTECTED_ROUTES
   additionalOptions?: Omit<SignInOptions, 'callbackUrl'>
 }
 
+type SignUpProps = UserRegister
+
 const useCustomSession = () => {
   const pathname = usePathname()
   const router = useRouter()
   const { data: session } = useSession()
+  const { enqueueSnackbar } = useSnackbar()
 
-  function ensureRedirect(targetRoute: PROTECTED_ROUTES) {
-    if (pathname !== targetRoute) router.push(targetRoute)
+  function ensureRedirect(targetRoute?: PROTECTED_ROUTES) {
+    if (!!targetRoute && targetRoute !== pathname) router.push(targetRoute)
   }
 
-  async function autoSignIn({
+  async function customSignIn({
     provider,
     targetRoute = PROTECTED_ROUTES.DASHBOARD,
     additionalOptions = {}
-  }: AutoSignInProps) {
+  }: SignInProps) {
     if (!!session) {
       router.push(targetRoute)
       return
@@ -35,28 +40,46 @@ const useCustomSession = () => {
     return signIn(provider, {
       callbackUrl: targetRoute,
       ...additionalOptions
-    }).then((response) => {
-      if (response?.ok) ensureRedirect(targetRoute)
-      return response
     })
-  }
-
-  async function registerUser(data: UserRegister) {
-    const user = await create(data)
-
-    if (user?.id) {
-      return autoSignIn({
-        additionalOptions: {
-          email: data.email,
-          password: data.password,
-          redirect: false
-        },
-        provider: AUTH_PROVIDERS.CREDENTIALS
+      .then((response) => {
+        if (!response?.ok) throw new Error('Error while signing in.')
+        ensureRedirect(targetRoute)
+        return response
       })
-    }
+      .catch((error) => {
+        console.error('error', error)
+        enqueueSnackbar(error.message, { variant: 'error' })
+      })
   }
 
-  return { autoSignIn, registerUser }
+  const signInMutation = useMutation({
+    mutationFn: customSignIn
+  })
+
+  const signUpMutation = useMutation({
+    mutationFn: async (formData: SignUpProps) => {
+      return create(formData)
+        .then((user) => {
+          if (!user?.id) throw new Error('Error while signing up.')
+          customSignIn({
+            additionalOptions: {
+              callbackUrl: PROTECTED_ROUTES.DASHBOARD,
+              email: formData.email,
+              password: formData.password,
+              redirect: false
+            },
+            provider: AUTH_PROVIDERS.CREDENTIALS,
+            targetRoute: PROTECTED_ROUTES.DASHBOARD
+          })
+        })
+        .catch((error) => {
+          console.error('error', error)
+          enqueueSnackbar(error.message, { variant: 'error' })
+        })
+    }
+  })
+
+  return { signInMutation, signUpMutation }
 }
 
 export default useCustomSession

@@ -4,9 +4,11 @@ import { type ReactNode } from 'react'
 import { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 
-import CustomSessionProvider from '@providers/CustomSessionProvider'
-import CustomThemeProvider from '@providers/CustomThemeProvider'
 import ObservabilityProvider from '@providers/ObservabilityProvider'
+import QueryProvider from '@providers/QueryProvider'
+import SessionProvider from '@providers/SessionProvider'
+import SnackbarProvider from '@providers/SnackbarProvider'
+import ThemeProvider from '@providers/ThemeProvider'
 
 const geistSans = Geist({
   subsets: ['latin'],
@@ -29,19 +31,21 @@ export default function RootLayout({
   children: ReactNode
 }>) {
   return (
-    <CustomSessionProvider>
+    <SessionProvider>
       <html
         suppressHydrationWarning
         lang="en"
       >
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
           <ObservabilityProvider>
-            <CustomThemeProvider themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
-              {children}
-            </CustomThemeProvider>
+            <QueryProvider>
+              <ThemeProvider themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
+                <SnackbarProvider>{children}</SnackbarProvider>
+              </ThemeProvider>
+            </QueryProvider>
           </ObservabilityProvider>
         </body>
       </html>
-    </CustomSessionProvider>
+    </SessionProvider>
   )
 }
