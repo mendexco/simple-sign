@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { usePathname, useRouter } from 'next/navigation'
 import { signIn, type SignInOptions, useSession } from 'next-auth/react'
-import { useSnackbar } from 'notistack'
+import { closeSnackbar, useSnackbar } from 'notistack'
 
 import { create } from '@actions/user'
 
@@ -45,6 +45,7 @@ const useCustomSession = () => {
         if (!response) return null
         if (!response.ok) throw new Error('Error while signing in.')
         ensureRedirect(targetRoute)
+        closeSnackbar()
         return response
       })
       .catch((error) => {
