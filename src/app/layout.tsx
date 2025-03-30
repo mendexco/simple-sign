@@ -3,6 +3,7 @@ import { type ReactNode } from 'react'
 
 import { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+import NextTopLoader from 'nextjs-toploader'
 
 import ObservabilityProvider from '@providers/ObservabilityProvider'
 import QueryProvider from '@providers/QueryProvider'
@@ -39,6 +40,7 @@ export default function RootLayout({
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
           <ObservabilityProvider>
             <QueryProvider>
+              <NextTopLoader showSpinner={false} />
               <ThemeProvider themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
                 <SnackbarProvider>{children}</SnackbarProvider>
               </ThemeProvider>

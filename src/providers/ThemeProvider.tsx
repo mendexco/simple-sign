@@ -1,8 +1,9 @@
 'use client'
 
 import { HeroUIProvider } from '@heroui/react'
-import { useRouter } from 'next/navigation'
 import { ThemeProvider as NextThemesProvider, type ThemeProviderProps } from 'next-themes'
+
+import { useRouter } from '@hooks'
 
 import type { ProvidersProps } from '@utils/types'
 

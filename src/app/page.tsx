@@ -1,7 +1,8 @@
 'use client'
 
 import { Button } from '@heroui/react'
-import { useRouter } from 'next/navigation'
+
+import { useRouter } from '@hooks'
 
 import { ROUTES } from '@utils/constants'
 

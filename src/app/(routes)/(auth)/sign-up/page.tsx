@@ -2,11 +2,10 @@
 
 import { Button, Form, Input } from '@heroui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { useCustomSession } from '@hooks'
+import { useCustomSession, useRouter } from '@hooks'
 
 import { ROUTES } from '@utils/constants'
 
