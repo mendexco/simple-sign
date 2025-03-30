@@ -42,7 +42,8 @@ const useCustomSession = () => {
       ...additionalOptions
     })
       .then((response) => {
-        if (!response?.ok) throw new Error('Error while signing in.')
+        if (!response) return null
+        if (!response.ok) throw new Error('Error while signing in.')
         ensureRedirect(targetRoute)
         return response
       })
