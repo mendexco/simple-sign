@@ -59,6 +59,11 @@ const useCustomSession = () => {
 
   const signUpMutation = useMutation({
     mutationFn: async (formData: SignUpProps) => {
+      if (!!session) {
+        router.push(PROTECTED_ROUTES.DASHBOARD)
+        return
+      }
+
       return create(formData)
         .then((user) => {
           if (!user?.id) throw new Error('Error while signing up.')
