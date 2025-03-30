@@ -37,7 +37,27 @@ const eslintConfig = [
             },
             {
               group: 'internal',
+              pattern: '@actions/**',
+              position: 'after'
+            },
+            {
+              group: 'internal',
+              pattern: '@app/**',
+              position: 'after'
+            },
+            {
+              group: 'internal',
               pattern: '@components/**',
+              position: 'after'
+            },
+            {
+              group: 'internal',
+              pattern: '@entities/**',
+              position: 'after'
+            },
+            {
+              group: 'internal',
+              pattern: '@hooks/**',
               position: 'after'
             },
             {

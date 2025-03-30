@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { create } from '@actions/user'
+
 import { ROUTES } from '@utils/constants'
 
 const schema = z.object({
@@ -17,10 +19,10 @@ const schema = z.object({
     .email({
       message: 'Invalid e-mail format'
     }),
-  password: z.string().nonempty({
+  name: z.string().nonempty({
     message: 'Field is required'
   }),
-  username: z.string().nonempty({
+  password: z.string().nonempty({
     message: 'Field is required'
   })
 })
@@ -37,8 +39,10 @@ export default function SignUpPage() {
     resolver: zodResolver(schema)
   })
 
-  const onSubmit = (data: FormData) => {
-    console.log(data)
+  const onSubmit = async (data: FormData) => {
+    console.log('data', data)
+    const response = await create(data)
+    console.log('response', response)
   }
 
   return (
@@ -49,11 +53,11 @@ export default function SignUpPage() {
       >
         <Input
           fullWidth
-          errorMessage={errors.username?.message}
-          isInvalid={!!errors.username}
-          label="Username"
-          type="username"
-          {...register('username')}
+          errorMessage={errors.name?.message}
+          isInvalid={!!errors.name}
+          label="Name"
+          type="name"
+          {...register('name')}
         />
         <Input
           fullWidth
