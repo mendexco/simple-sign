@@ -13,6 +13,7 @@ Simple Sign is a web-based application built with Next.js, Prisma, and React tha
 - Interface for signature
 - Notifications at dashboard
 - I18n
+- Accessibility and metadata
 
 ### 🧹 Technical Debts
 - Add Storybook for UI components
