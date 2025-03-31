@@ -14,12 +14,18 @@ export default function HomePage() {
   return (
     <>
       <HomeNavbar />
-      <div className="w-full  flex justify-center items-center">
+      <div className="w-full flex flex-col justify-center items-center mt-32 gap-6">
+        <h1 className="text-8xl font-bold text-center">
+          SIMPLE
+          <br />
+          SIGN
+        </h1>
         <Button
           className="font-semibold"
+          variant="flat"
           onPress={() => router.push(UNPROTECTED_ROUTES.SIGN_IN)}
         >
-          enter
+          start now
         </Button>
       </div>
     </>

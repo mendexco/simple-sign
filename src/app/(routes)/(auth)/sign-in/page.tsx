@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { Button, Form, Input } from '@heroui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { FaGithub } from 'react-icons/fa'
+import { FaGithub, FaGoogle } from 'react-icons/fa'
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io'
 import { z } from 'zod'
 
@@ -104,6 +104,18 @@ export default function SignInPage() {
             }
           >
             <FaGithub size={32} />
+          </Button>
+          <Button
+            isIconOnly
+            isDisabled={signInMutation.isPending}
+            variant="solid"
+            onPress={() =>
+              signInMutation.mutate({
+                provider: AUTH_PROVIDERS.GOOGLE
+              })
+            }
+          >
+            <FaGoogle size={32} />
           </Button>
         </div>
         <Button

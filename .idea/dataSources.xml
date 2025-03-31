@@ -15,5 +15,12 @@
       <jdbc-url>jdbc:postgresql://ep-sweet-bird-actbord0-pooler.sa-east-1.aws.neon.tech:5432/neon-simple-sign-postgres</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="simple-sign-prod" uuid="2af9d251-6c0d-41c1-aac5-baeab818225d">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ep-crimson-shadow-aciw8zzn-pooler.sa-east-1.aws.neon.tech:5432/neon-simple-sign-postgres</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
