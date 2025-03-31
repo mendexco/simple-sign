@@ -15,7 +15,7 @@ const options = {
 }
 
 type DocumentPreviewProps = {
-  file?: File
+  file?: File | null
   onClose?: () => void
   open?: boolean
 }

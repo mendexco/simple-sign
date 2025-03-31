@@ -4,7 +4,6 @@ import { Button, Navbar, NavbarContent, NavbarItem } from '@heroui/react'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import { CiLogout } from 'react-icons/ci'
-import { FaFileSignature } from 'react-icons/fa'
 import { IoReturnDownBack } from 'react-icons/io5'
 
 import { useRouter } from '@hooks'
@@ -45,21 +44,9 @@ export const LoggedNavbar: FC = () => {
           )}
         </NavbarItem>
       </NavbarContent>
-      <NavbarContent justify="center">
-        <NavbarItem isActive>
-          <ThemeSwitcher />
-        </NavbarItem>
-      </NavbarContent>
       <NavbarContent justify="end">
-        <NavbarItem className="hidden sm:flex">
-          <Button
-            className="font-semibold"
-            endContent={<FaFileSignature size={16} />}
-            size="sm"
-            onPress={() => router.push(PROTECTED_ROUTES.UPLOAD)}
-          >
-            upload
-          </Button>
+        <NavbarItem>
+          <ThemeSwitcher />
         </NavbarItem>
       </NavbarContent>
     </Navbar>

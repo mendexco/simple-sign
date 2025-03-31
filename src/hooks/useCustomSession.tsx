@@ -5,8 +5,7 @@ import { signIn, type SignInOptions, signOut, useSession } from 'next-auth/react
 
 import { useRouter } from '@hooks'
 
-import { create } from '@actions/user'
-import { getUserByEmail } from '@actions/user/get'
+import { create, getUserByEmail } from '@actions/user'
 
 import type { UserRegister } from '@entities/user'
 
@@ -28,13 +27,18 @@ const useCustomSession = () => {
   async function getUserWithEmail(email?: string | null) {
     if (!email) throw new Error('No e-mail provided.')
 
-    return getUserByEmail(email)
-      .catch((error) => {
-        console.error('Error while getting user: ', error.message)
-      })
+    return await getUserByEmail(email)
       .then((user) => {
         if (!user?.id) throw new Error('Error while getting user.')
         return user
+      })
+      .catch((error) => {
+        console.error('Error while getting user: ', error.message)
+        addToast({
+          color: 'danger',
+          title: error.message
+        })
+        return null
       })
   }
 

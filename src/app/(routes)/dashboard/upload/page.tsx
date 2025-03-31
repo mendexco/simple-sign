@@ -47,7 +47,7 @@ export default function UploadPage() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center h-screen p-4 gap-10">
+      <div className="flex flex-col items-center justify-center mt-0 sm:mt-24 p-4 gap-10">
         <h1 className="text-2xl font-bold">Upload Document</h1>
         <Form
           className="flex gap-2"

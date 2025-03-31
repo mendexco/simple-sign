@@ -1,3 +1,5 @@
+import type { UserObject } from '@entities/user'
+
 type DocumentUpload = {
   file: string
   name: string
@@ -5,4 +7,23 @@ type DocumentUpload = {
   senderId: string
 }
 
-export type { DocumentUpload }
+type DocumentObject = {
+  id: string
+  name: string | null
+  createdAt: Date
+  updatedAt: Date
+  file: string
+  senderId: string
+  receiverId: string
+  signed: boolean | null
+}
+
+type DocumentListedWithReceiver = DocumentObject & {
+  receiver: UserObject
+}
+
+type DocumentListedWithSender = DocumentObject & {
+  sender: UserObject
+}
+
+export type { DocumentListedWithReceiver, DocumentListedWithSender, DocumentObject, DocumentUpload }

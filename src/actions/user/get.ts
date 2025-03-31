@@ -11,6 +11,7 @@ export async function getUserById(id: string) {
       }
     })
     .then((user) => {
+      if (!user?.id) throw new Error('User not found!')
       console.info('[/user/get] User found!')
       return user
     })
@@ -29,6 +30,7 @@ export async function getUserByEmail(email: string) {
       }
     })
     .then((user) => {
+      if (!user?.id) throw new Error('User not found!')
       console.info('[/user/get] User found!')
       return user
     })

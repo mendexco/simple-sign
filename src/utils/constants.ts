@@ -1,5 +1,7 @@
 export enum ROUTES {
   DASHBOARD = '/dashboard',
+  FILES_RECEIVED = '/dashboard/files/received',
+  FILES_SENT = '/dashboard/files/sent',
   HOME = '/',
   SIGN_IN = '/sign-in',
   SIGN_UP = '/sign-up',
@@ -8,6 +10,8 @@ export enum ROUTES {
 
 export enum PROTECTED_ROUTES {
   DASHBOARD = ROUTES.DASHBOARD,
+  FILES_RECEIVED = ROUTES.FILES_RECEIVED,
+  FILES_SENT = ROUTES.FILES_SENT,
   UPLOAD = ROUTES.UPLOAD
 }
 
