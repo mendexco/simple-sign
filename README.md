@@ -12,6 +12,7 @@ Simple Sign is a web-based application built with Next.js, Prisma, and React tha
 - Delete sent files
 - Interface for signature
 - Notifications at dashboard
+- I18n
 
 ### 🧹 Technical Debts
 - Add Storybook for UI components
