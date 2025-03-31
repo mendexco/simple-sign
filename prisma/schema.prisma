@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserOrigin {
+  CREDENTIALS
+  OAUTH
+}
+
+model User {
+  id                String      @id @default(cuid())
+  name              String?
+  email             String      @unique
+  emailVerified     DateTime?
+  password          String?
+  image             String?
+  accounts          Account[]
+  sessions          Session[]
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  origin            UserOrigin  @default(OAUTH)
+  sentDocuments     Document[]  @relation("DocumentSender")
+  receivedDocuments Document[]  @relation("DocumentReceiver")
+  signatures        Signature[] @relation("SignatureOwner")
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model Document {
+  id         String   @id @default(cuid())
+  name       String?
+  file       String   @db.Text
+  senderId   String
+  sender     User     @relation("DocumentSender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId String
+  receiver   User     @relation("DocumentReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  signed     Boolean? @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Signature {
+  id        String   @id @default(cuid())
+  name      String?
+  image     String   @db.Text
+  userId    String
+  user      User     @relation("SignatureOwner", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

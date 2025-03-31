@@ -1,0 +1,27 @@
+name: simple-sign-local
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: 'pg-simple-sign'
+    restart: always
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+       - '${DATABASE_PORT}:${DATABASE_PORT}'
+    volumes:
+      - postgres_vol:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer:5.1.0
+    container_name: adminer-pg-simple-sign
+    restart: no
+    depends_on:
+      - postgres
+    ports:
+      - '${ADMINER_PORT}:${ADMINER_PORT}'
+
+volumes:
+  postgres_vol:
