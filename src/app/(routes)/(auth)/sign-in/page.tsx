@@ -21,7 +21,7 @@ export default function SignInPage() {
   const router = useRouter()
   const { signInMutation } = useCustomSession()
 
-  const [isPasswordVisible, setPassordVisible] = useState(false)
+  const [isPasswordVisible, setPasswordVisible] = useState(false)
 
   const {
     register,
@@ -63,7 +63,7 @@ export default function SignInPage() {
               aria-label="toggle password visibility"
               className="focus:outline-none"
               type="button"
-              onClick={() => setPassordVisible((current) => !current)}
+              onClick={() => setPasswordVisible((current) => !current)}
             >
               {isPasswordVisible ? (
                 <IoMdEyeOff className="text-2xl text-default-400 pointer-events-none" />
